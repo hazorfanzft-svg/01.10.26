@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHT Информатика — Синфи 7</title>
+<style>
+  /* ===== RESET ===== */
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --violet: #7c3aed;
+    --indigo: #4f46e5;
+    --blue: #2563eb;
+    --sky: #0ea5e9;
+    --cyan: #06b6d4;
+    --teal: #14b8a6;
+    --green: #10b981;
+    --lime: #84cc16;
+    --amber: #f59e0b;
+    --orange: #f97316;
+    --rose: #f43f5e;
+    --pink: #ec4899;
+    --fuchsia: #d946ef;
+
+    --ink: #0f172a;
+    --ink-2: #1e293b;
+    --muted: #64748b;
+    --muted-2: #94a3b8;
+    --line: #e2e8f0;
+    --bg: #fafbff;
+
+    --r-lg: 28px;
+    --r-md: 20px;
+    --r-sm: 14px;
+
+    --shadow-sm: 0 2px 8px rgba(15,23,42,.05);
+    --shadow-md: 0 10px 30px -8px rgba(79,70,229,.18);
+    --shadow-lg: 0 24px 60px -20px rgba(79,70,229,.32);
+    --shadow-glow: 0 0 40px rgba(124,58,237,.35);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, 'Tahoma', sans-serif;
+    background:
+      radial-gradient(1200px 600px at 10% -5%, #ede9fe 0%, transparent 60%),
+      radial-gradient(1000px 700px at 100% 10%, #cffafe 0%, transparent 55%),
+      radial-gradient(900px 500px at 50% 100%, #fce7f3 0%, transparent 60%),
+      var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(124,58,237,.05) 0, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(6,182,212,.05) 0, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ===== CUSTOM SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 12px; }
+  ::-webkit-scrollbar-track { background: #f1f5f9; }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--violet), var(--cyan));
+    border-radius: 10px;
+    border: 3px solid #f1f5f9;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, var(--indigo), var(--teal)); }
+
+  /* ===== PROGRESS ===== */
+  #progress-bar {
+    position: fixed; top: 0; left: 0; height: 4px; width: 0%;
+    background: linear-gradient(90deg, var(--pink), var(--amber), var(--lime), var(--cyan), var(--violet));
+    background-size: 300% 100%;
+    z-index: 9999;
+    animation: shine 3s linear infinite;
+    transition: width .12s linear;
+    box-shadow: 0 0 18px rgba(124,58,237,.6);
+  }
+  @keyframes shine {
+    0% { background-position: 0% 0; }
+    100% { background-position: 300% 0; }
+  }
+
+  /* ===== FLOATING DECORATIONS ===== */
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: .45;
+    z-index: 0;
+    pointer-events: none;
+    animation: blobFloat 18s ease-in-out infinite;
+  }
+  .blob.b1 { width: 380px; height: 380px; top: -120px; left: -120px; background: linear-gradient(135deg, #a78bfa, #ec4899); }
+  .blob.b2 { width: 320px; height: 320px; top: 40%; right: -140px; background: linear-gradient(135deg, #22d3ee, #4f46e5); animation-delay: -6s; }
+  .blob.b3 { width: 300px; height: 300px; bottom: -100px; left: 20%; background: linear-gradient(135deg, #fbbf24, #f43f5e); animation-delay: -12s; }
+
+  @keyframes blobFloat {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33%     { transform: translate(40px,-30px) scale(1.1); }
+    66%     { transform: translate(-30px,30px) scale(.95); }
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    position: relative;
+    margin: 24px auto 0;
+    max-width: 1180px;
+    padding: 80px 30px 100px;
+    border-radius: 40px;
+    text-align: center;
+    color: #fff;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(255,255,255,.25) 0, transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(255,255,255,.18) 0, transparent 40%),
+      linear-gradient(135deg, #6d28d9 0%, #4f46e5 30%, #0ea5e9 65%, #06b6d4 100%);
+    box-shadow: var(--shadow-lg), 0 0 80px rgba(124,58,237,.25);
+    z-index: 1;
+  }
+
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  }
+
+  header > * { position: relative; z-index: 2; }
+
+  .floating-shape {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,.14);
+    border: 2px solid rgba(255,255,255,.28);
+    backdrop-filter: blur(6px);
+    animation: shapeFloat 7s ease-in-out infinite;
+  }
+  .fs1 { width: 90px; height: 90px; top: 12%; left: 8%; animation-delay: 0s; }
+  .fs2 { width: 60px; height: 60px; top: 20%; right: 10%; animation-delay: -2s; }
+  .fs3 { width: 120px; height: 120px; bottom: 15%; left: 15%; animation-delay: -4s; }
+  .fs4 { width: 45px; height: 45px; bottom: 25%; right: 18%; animation-delay: -3s; }
+  .fs5 { width: 75px; height: 75px; top: 55%; right: 8%; animation-delay: -5s; }
+
+  @keyframes shapeFloat {
+    0%,100% { transform: translateY(0) rotate(0deg); opacity: .7; }
+    50%     { transform: translateY(-28px) rotate(180deg); opacity: 1; }
+  }
+
+  .logo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,.18);
+    border: 1.5px solid rgba(255,255,255,.42);
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: .82rem;
+    margin-bottom: 24px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 24px rgba(0,0,0,.15);
+    animation: fadeDown .9s ease;
+    text-transform: uppercase;
+  }
+  .logo-badge::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 12px #4ade80;
+    animation: blink 1.6s ease-in-out infinite;
+  }
+  @keyframes blink { 50% { opacity: .3; } }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .header-emoji {
+    font-size: 4.5rem;
+    display: block;
+    margin-bottom: 14px;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,.35));
+    animation: bounce 3s ease-in-out infinite;
+  }
+  @keyframes bounce {
+    0%,100% { transform: translateY(0) rotate(-3deg); }
+    50%     { transform: translateY(-16px) rotate(3deg); }
+  }
+
+  header h1 {
+    font-size: clamp(1.9rem, 5.5vw, 3.4rem);
+    font-weight: 900;
+    letter-spacing: -.5px;
+    line-height: 1.15;
+    margin-bottom: 14px;
+    text-shadow: 0 6px 30px rgba(0,0,0,.25);
+    background: linear-gradient(180deg, #fff, #e0e7ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  header .subtitle {
+    font-size: clamp(1rem, 2.6vw, 1.35rem);
+    font-weight: 500;
+    opacity: .95;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  /* ===== NAV ===== */
+  .nav-wrap {
+    position: sticky;
+    top: 14px;
+    z-index: 500;
+    max-width: 1120px;
+    margin: -58px auto 0;
+    padding: 0 16px;
+  }
+
+  nav {
+    background: rgba(255,255,255,.78);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255,255,255,.9);
+    box-shadow: 0 12px 40px -12px rgba(79,70,229,.28), inset 0 1px 0 rgba(255,255,255,.9);
+    border-radius: 22px;
+    padding: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  nav a {
+    text-decoration: none;
+    color: var(--ink-2);
+    font-weight: 600;
+    font-size: .82rem;
+    padding: 9px 15px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #f8fafc, #eef2ff);
+    border: 1px solid transparent;
+    transition: all .28s cubic-bezier(.4,0,.2,1);
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+  }
+
+  nav a::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--violet), var(--cyan));
+    opacity: 0;
+    transition: opacity .3s ease;
+    z-index: -1;
+  }
+
+  nav a:hover {
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px -6px rgba(124,58,237,.5);
+  }
+  nav a:hover::before { opacity: 1; }
+
+  /* ===== MAIN ===== */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 60px 18px 80px;
+  }
+
+  /* ===== SECTION ===== */
+  section {
+    position: relative;
+    background: rgba(255,255,255,.85);
+    backdrop-filter: blur(14px);
+    border-radius: var(--r-lg);
+    padding: 40px 34px;
+    margin-bottom: 32px;
+    border: 1px solid rgba(255,255,255,.9);
+    box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255,255,255,.9);
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity .8s cubic-bezier(.4,0,.2,1), transform .8s cubic-bezier(.4,0,.2,1);
+    overflow: hidden;
+  }
+
+  section.visible { opacity: 1; transform: translateY(0); }
+
+  section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 6px; height: 100%;
+    background: linear-gradient(180deg, var(--violet), var(--cyan));
+    border-radius: var(--r-lg) 0 0 var(--r-lg);
+  }
+
+  section::after {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,.09), transparent 70%);
+    pointer-events: none;
+  }
+
+  section:nth-of-type(3n+2)::before { background: linear-gradient(180deg, var(--pink), var(--amber)); }
+  section:nth-of-type(3n+2)::after  { background: radial-gradient(circle, rgba(236,72,153,.09), transparent 70%); }
+  section:nth-of-type(3n+3)::before { background: linear-gradient(180deg, var(--teal), var(--lime)); }
+  section:nth-of-type(3n+3)::after  { background: radial-gradient(circle, rgba(20,184,166,.09), transparent 70%); }
+
+  section:hover {
+    box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255,255,255,.9);
+  }
+
+  .sec-title {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: clamp(1.25rem, 3.2vw, 1.7rem);
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 22px;
+    letter-spacing: -.3px;
+    line-height: 1.3;
+  }
+
+  .num {
+    flex-shrink: 0;
+    width: 52px; height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--violet), var(--indigo));
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 800;
+    box-shadow: 0 12px 26px -8px rgba(124,58,237,.6), inset 0 -3px 0 rgba(0,0,0,.15);
+    position: relative;
+    transition: transform .3s ease;
+  }
+  .num::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: 13px;
+    border: 1.5px solid rgba(255,255,255,.25);
+    pointer-events: none;
+  }
+  section:hover .num { transform: rotate(-6deg) scale(1.06); }
+
+  section:nth-of-type(3n+2) .num { background: linear-gradient(135deg, var(--pink), var(--amber)); box-shadow: 0 12px 26px -8px rgba(236,72,153,.6), inset 0 -3px 0 rgba(0,0,0,.15); }
+  section:nth-of-type(3n+3) .num { background: linear-gradient(135deg, var(--teal), var(--green)); box-shadow: 0 12px 26px -8px rgba(20,184,166,.6), inset 0 -3px 0 rgba(0,0,0,.15); }
+
+  p { margin-bottom: 14px; color: var(--ink-2); font-size: 1rem; }
+
+  .highlight {
+    background: linear-gradient(120deg, #fef3c7 0%, #fde68a 100%);
+    padding: 2px 10px;
+    border-radius: 8px;
+    font-weight: 700;
+    color: #78350f;
+    box-shadow: 0 2px 0 #fbbf24;
+  }
+
+  .box-note {
+    position: relative;
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+    border-left: 5px solid var(--indigo);
+    padding: 20px 24px;
+    border-radius: var(--r-sm);
+    margin: 20px 0;
+    font-size: .97rem;
+    color: var(--ink-2);
+    box-shadow: 0 6px 20px -8px rgba(79,70,229,.25);
+    overflow: hidden;
+  }
+  .box-note::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    background: radial-gradient(circle at top right, rgba(79,70,229,.12), transparent 70%);
+  }
+
+  .box-note.orange {
+    background: linear-gradient(135deg, #fff7ed, #ffedd5);
+    border-left-color: var(--orange);
+    box-shadow: 0 6px 20px -8px rgba(249,115,22,.25);
+  }
+  .box-note.orange::before { background: radial-gradient(circle at top right, rgba(249,115,22,.12), transparent 70%); }
+
+  .box-note.green {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border-left-color: var(--green);
+    box-shadow: 0 6px 20px -8px rgba(16,185,129,.25);
+  }
+  .box-note.green::before { background: radial-gradient(circle at top right, rgba(16,185,129,.12), transparent 70%); }
+
+  .box-note.pink {
+    background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+    border-left-color: var(--pink);
+    box-shadow: 0 6px 20px -8px rgba(236,72,153,.25);
+  }
+  .box-note.pink::before { background: radial-gradient(circle at top right, rgba(236,72,153,.12), transparent 70%); }
+
+  /* ===== CARDS ===== */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 18px;
+    margin-top: 22px;
+  }
+
+  .card {
+    position: relative;
+    background: #fff;
+    border-radius: var(--r-md);
+    padding: 26px 22px;
+    border: 1.5px solid var(--line);
+    transition: all .35s cubic-bezier(.4,0,.2,1);
+    overflow: hidden;
+    cursor: default;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--violet), var(--cyan));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .4s cubic-bezier(.4,0,.2,1);
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,.08), transparent 70%);
+    transition: transform .5s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 24px 48px -16px rgba(79,70,229,.32);
+    border-color: transparent;
+  }
+  .card:hover::before { transform: scaleX(1); }
+  .card:hover::after  { transform: scale(1.5); }
+
+  .card .icon {
+    font-size: 2.4rem;
+    display: inline-block;
+    margin-bottom: 12px;
+    transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,.12));
+  }
+  .card:hover .icon { transform: scale(1.18) rotate(-8deg); }
+
+  .card h4 {
+    font-size: 1.05rem;
+    color: var(--ink);
+    margin-bottom: 8px;
+    font-weight: 800;
+    letter-spacing: -.2px;
+  }
+  .card p { font-size: .92rem; color: var(--muted); margin: 0; line-height: 1.6; }
+
+  .card.c1::before { background: linear-gradient(90deg, #7c3aed, #06b6d4); }
+  .card.c1::after  { background: radial-gradient(circle, rgba(124,58,237,.08), transparent 70%); }
+  .card.c2::before { background: linear-gradient(90deg, #f43f5e, #f59e0b); }
+  .card.c2::after  { background: radial-gradient(circle, rgba(244,63,94,.08), transparent 70%); }
+  .card.c3::before { background: linear-gradient(90deg, #10b981, #06b6d4); }
+  .card.c3::after  { background: radial-gradient(circle, rgba(16,185,129,.08), transparent 70%); }
+  .card.c4::before { background: linear-gradient(90deg, #ec4899, #f97316); }
+  .card.c4::after  { background: radial-gradient(circle, rgba(236,72,153,.08), transparent 70%); }
+
+  /* ===== TABLE ===== */
+  .table-wrap {
+    overflow-x: auto;
+    margin-top: 24px;
+    border-radius: var(--r-md);
+    box-shadow: 0 16px 40px -16px rgba(79,70,229,.28);
+    border: 1px solid var(--line);
+    background: #fff;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 640px;
+  }
+
+  thead {
+    background: linear-gradient(135deg, var(--violet), var(--indigo) 50%, var(--cyan));
+    position: relative;
+  }
+
+  th {
+    padding: 18px 20px;
+    text-align: left;
+    font-weight: 700;
+    font-size: .88rem;
+    color: #fff;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 16px 20px;
+    font-size: .94rem;
+    color: var(--ink-2);
+    border-bottom: 1px solid var(--line);
+    transition: background .25s ease;
+  }
+
+  tbody tr { transition: all .25s ease; }
+  tbody tr:hover { background: linear-gradient(90deg, #f5f3ff, #ecfeff); }
+  tbody tr:hover td:first-child { color: var(--violet); transform: translateX(4px); }
+  tbody tr:last-child td { border-bottom: none; }
+
+  td:first-child {
+    font-weight: 800;
+    color: var(--indigo);
+    transition: all .25s ease;
+  }
+
+  /* ===== DIAGRAM ===== */
+  .diagram {
+    margin-top: 26px;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(124,58,237,.08), transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(6,182,212,.08), transparent 50%),
+      linear-gradient(135deg, #f8fafc, #eef2ff);
+    border-radius: var(--r-md);
+    padding: 36px 22px;
+    text-align: center;
+    border: 2px dashed #c7d2fe;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .diagram::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(124,58,237,.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: .5;
+  }
+
+  .diagram > * { position: relative; z-index: 1; }
+
+  .diagram .top-node {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--violet), var(--indigo));
+    color: #fff;
+    padding: 16px 36px;
+    border-radius: 16px;
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: .5px;
+    box-shadow: 0 16px 40px -10px rgba(124,58,237,.6), inset 0 -3px 0 rgba(0,0,0,.15);
+    position: relative;
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+  .diagram .top-node::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 12px;
+    border: 1.5px solid rgba(255,255,255,.22);
+  }
+
+  @keyframes pulseGlow {
+    0%,100% { box-shadow: 0 16px 40px -10px rgba(124,58,237,.6), inset 0 -3px 0 rgba(0,0,0,.15); }
+    50%     { box-shadow: 0 16px 56px -6px rgba(124,58,237,.9), inset 0 -3px 0 rgba(0,0,0,.15); }
+  }
+
+  .diagram .line {
+    width: 3px; height: 30px;
+    background: linear-gradient(180deg, var(--violet), var(--cyan));
+    margin: 6px auto;
+    border-radius: 3px;
+    box-shadow: 0 0 12px rgba(124,58,237,.5);
+  }
+
+  .diagram .branches {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+    margin-top: 10px;
+  }
+
+  .branch {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 16px;
+    border-top: 5px solid var(--violet);
+    box-shadow: 0 10px 26px -10px rgba(15,23,42,.16);
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+    text-align: left;
+  }
+
+  .branch:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 20px 40px -12px rgba(79,70,229,.35);
+  }
+
+  .branch b {
+    display: block;
+    color: var(--ink);
+    margin-bottom: 8px;
+    font-size: .96rem;
+    font-weight: 800;
+  }
+  .branch span { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+  .branch.b1 { border-top-color: var(--violet); }
+  .branch.b2 { border-top-color: var(--pink); }
+  .branch.b3 { border-top-color: var(--teal); }
+  .branch.b4 { border-top-color: var(--amber); }
+
+  /* ===== TIMELINE ===== */
+  .timeline { margin-top: 24px; position: relative; padding-left: 40px; }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 12px; top: 8px; bottom: 8px;
+    width: 3px;
+    background: linear-gradient(180deg, var(--violet), var(--cyan), var(--teal), var(--lime));
+    border-radius: 3px;
+    box-shadow: 0 0 12px rgba(124,58,237,.4);
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 18px;
+    background: linear-gradient(135deg, #fff, #f8fafc);
+    padding: 18px 22px;
+    border-radius: var(--r-sm);
+    border: 1.5px solid var(--line);
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+    font-size: .95rem;
+    color: var(--ink-2);
+    line-height: 1.65;
+  }
+
+  .tl-item:hover {
+    background: linear-gradient(135deg, #f5f3ff, #ecfeff);
+    transform: translateX(8px);
+    border-color: #c7d2fe;
+    box-shadow: 0 12px 28px -12px rgba(79,70,229,.3);
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -35px; top: 22px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    border: 4px solid var(--violet);
+    box-shadow: 0 0 0 5px rgba(124,58,237,.15), 0 0 16px rgba(124,58,237,.5);
+    transition: all .3s ease;
+  }
+
+  .tl-item:hover::before {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 5px rgba(6,182,212,.2), 0 0 20px rgba(6,182,212,.7);
+    transform: scale(1.15);
+  }
+
+  .tl-item b { color: var(--indigo); font-weight: 800; }
+
+  /* ===== SUMMARY ===== */
+  .summary-list { list-style: none; margin-top: 18px; }
+
+  .summary-list li {
+    position: relative;
+    padding: 15px 20px 15px 58px;
+    background: linear-gradient(135deg, #fff, #f8fafc);
+    border: 1.5px solid var(--line);
+    border-radius: var(--r-sm);
+    margin-bottom: 12px;
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+    color: var(--ink-2);
+    font-size: .96rem;
+  }
+
+  .summary-list li:hover {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border-color: #a7f3d0;
+    transform: translateX(8px);
+    box-shadow: 0 12px 26px -12px rgba(16,185,129,.3);
+  }
+
+  .summary-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 16px; top: 50%;
+    transform: translateY(-50%);
+    width: 30px; height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--green), var(--teal));
+    color: #fff;
+    font-weight: 900;
+    font-size: .9rem;
+    box-shadow: 0 6px 14px -4px rgba(16,185,129,.6), inset 0 -2px 0 rgba(0,0,0,.15);
+  }
+
+  /* ===== QUIZ ===== */
+  #quiz-section { background: linear-gradient(160deg, #ffffff, #f5f3ff); }
+
+  .question {
+    background: #fff;
+    border-radius: var(--r-md);
+    padding: 24px 22px 18px;
+    margin-bottom: 18px;
+    border: 1.5px solid var(--line);
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .question::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--violet), var(--cyan));
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+
+  .question:hover {
+    border-color: #c7d2fe;
+    box-shadow: 0 16px 40px -16px rgba(79,70,229,.3);
+    transform: translateY(-2px);
+  }
+  .question:hover::before { opacity: 1; }
+
+  .q-text {
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--ink);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .q-index {
+    flex-shrink: 0;
+    width: 34px; height: 34px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--violet), var(--indigo));
+    color: #fff;
+    border-radius: 12px;
+    font-size: .88rem;
+    font-weight: 800;
+    box-shadow: 0 8px 18px -6px rgba(124,58,237,.6), inset 0 -2px 0 rgba(0,0,0,.15);
+  }
+
+  .options label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 18px;
+    border-radius: var(--r-sm);
+    margin-bottom: 9px;
+    cursor: pointer;
+    background: #f8fafc;
+    border: 2px solid transparent;
+    transition: all .25s cubic-bezier(.4,0,.2,1);
+    font-size: .95rem;
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+
+  .options label:hover {
+    background: #eef2ff;
+    transform: translateX(6px);
+    border-color: #c7d2fe;
+  }
+
+  .options input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 22px; height: 22px;
+    border: 2.5px solid #cbd5e1;
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+    cursor: pointer;
+    transition: all .22s ease;
+    background: #fff;
+  }
+
+  .options input[type="radio"]:hover { border-color: var(--violet); }
+
+  .options input[type="radio"]:checked {
+    border-color: var(--violet);
+    background: var(--violet);
+    box-shadow: 0 0 0 4px rgba(124,58,237,.15);
+  }
+
+  .options input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #fff;
+  }
+
+  .options label.selected {
+    background: #eef2ff;
+    border-color: #a5b4fc;
+  }
+
+  .options label.correct {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border-color: var(--green);
+    color: #065f46;
+    font-weight: 700;
+  }
+  .options label.correct::after {
+    content: '✓';
+    margin-left: auto;
+    color: var(--green);
+    font-weight: 900;
+    font-size: 1.1rem;
+  }
+
+  .options label.wrong {
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    border-color: var(--rose);
+    color: #991b1b;
+    font-weight: 700;
+  }
+  .options label.wrong::after {
+    content: '✗';
+    margin-left: auto;
+    color: var(--rose);
+    font-weight: 900;
+    font-size: 1.1rem;
+  }
+
+  /* ===== BUTTONS ===== */
+  .btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 28px;
+    justify-content: center;
+  }
+
+  .btn {
+    position: relative;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 17px 44px;
+    border-radius: 50px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--violet), var(--indigo), var(--cyan));
+    background-size: 200% 200%;
+    box-shadow: 0 14px 34px -10px rgba(124,58,237,.65), inset 0 -3px 0 rgba(0,0,0,.15);
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+    overflow: hidden;
+    letter-spacing: .3px;
+    animation: gradientMove 5s ease infinite;
+  }
+
+  @keyframes gradientMove {
+    0%,100% { background-position: 0% 50%; }
+    50%     { background-position: 100% 50%; }
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+    transition: left .6s ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 22px 48px -12px rgba(124,58,237,.7), inset 0 -3px 0 rgba(0,0,0,.15);
+  }
+  .btn:hover::before { left: 100%; }
+  .btn:active { transform: translateY(-1px) scale(.99); }
+
+  .btn.secondary {
+    background: linear-gradient(135deg, var(--amber), var(--orange), var(--rose));
+    background-size: 200% 200%;
+    box-shadow: 0 14px 34px -10px rgba(249,115,22,.6), inset 0 -3px 0 rgba(0,0,0,.15);
+  }
+  .btn.secondary:hover {
+    box-shadow: 0 22px 48px -12px rgba(249,115,22,.7), inset 0 -3px 0 rgba(0,0,0,.15);
+  }
+
+  /* ===== RESULT ===== */
+  #result {
+    margin-top: 30px;
+    display: none;
+    text-align: center;
+    padding: 40px 26px;
+    border-radius: var(--r-lg);
+    background: linear-gradient(135deg, #f5f3ff, #ecfeff);
+    border: 2.5px dashed #c7d2fe;
+    animation: pop .6s cubic-bezier(.34,1.56,.64,1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #result::before {
+    content: '🎉';
+    position: absolute;
+    top: 14px; right: 18px;
+    font-size: 2rem;
+    opacity: .3;
+  }
+
+  #result.show { display: block; }
+
+  @keyframes pop {
+    0%   { opacity: 0; transform: scale(.85); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  .score-circle {
+    width: 160px; height: 160px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 2.6rem;
+    font-weight: 900;
+    background: conic-gradient(var(--green) 0deg, var(--green) 0deg, #e2e8f0 0deg);
+    position: relative;
+    transition: background 1.2s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 20px 50px -20px rgba(79,70,229,.5);
+  }
+
+  .score-circle::before {
+    content: '';
+    position: absolute;
+    inset: 14px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fff, #f8fafc);
+    box-shadow: inset 0 4px 12px rgba(15,23,42,.06);
+  }
+
+  .score-circle span {
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(135deg, var(--violet), var(--cyan));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 2.4rem;
+  }
+
+  #result h3 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--violet), var(--cyan));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+  }
+
+  #result p {
+    color: var(--muted);
+    font-size: 1.02rem;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    position: relative;
+    z-index: 1;
+    margin-top: 40px;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(124,58,237,.35) 0, transparent 50%),
+      radial-gradient(circle at 85% 80%, rgba(6,182,212,.3) 0, transparent 50%),
+      linear-gradient(135deg, #1e1b4b, #0f172a);
+    color: #fff;
+    text-align: center;
+    padding: 60px 24px 40px;
+    border-radius: 40px 40px 0 0;
+    overflow: hidden;
+  }
+
+  footer::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  footer > * { position: relative; z-index: 1; }
+
+  footer .f-logo {
+    font-size: 2.4rem;
+    margin-bottom: 12px;
+    display: inline-block;
+    animation: bounce 3s ease-in-out infinite;
+  }
+
+  footer .f-title {
+    font-size: 1.35rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #c4b5fd, #67e8f9, #a5f3fc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -.3px;
+  }
+
+  footer > div:not(.f-title):not(.author) {
+    color: rgba(255,255,255,.7);
+    font-size: .95rem;
+    margin-bottom: 8px;
+  }
+
+  footer .author {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 14px 34px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, var(--violet), var(--cyan));
+    font-weight: 800;
+    letter-spacing: .5px;
+    box-shadow: 0 14px 40px -10px rgba(124,58,237,.7), inset 0 -3px 0 rgba(0,0,0,.2);
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+    font-size: 1rem;
+  }
+
+  footer .author::before {
+    content: '👨‍🏫';
+    font-size: 1.25rem;
+  }
+
+  footer .author:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 22px 52px -12px rgba(124,58,237,.85), inset 0 -3px 0 rgba(0,0,0,.2);
+  }
+
+  footer small {
+    display: block;
+    margin-top: 22px;
+    opacity: .5;
+    font-size: .82rem;
+    letter-spacing: .5px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 720px) {
+    header { margin: 12px 10px 0; padding: 56px 20px 76px; border-radius: 28px; }
+    .nav-wrap { top: 8px; margin-top: -44px; padding: 0 10px; }
+    nav { border-radius: 18px; padding: 10px; gap: 4px; }
+    nav a { font-size: .74rem; padding: 7px 11px; }
+    main { padding: 40px 12px 60px; }
+    section { padding: 26px 20px; border-radius: 22px; margin-bottom: 22px; }
+    .sec-title { font-size: 1.15rem; gap: 12px; }
+    .num { width: 42px; height: 42px; font-size: 1rem; border-radius: 13px; }
+    .cards { grid-template-columns: 1fr; gap: 14px; }
+    .card { padding: 20px 18px; }
+    .card .icon { font-size: 2rem; }
+    .btn { padding: 15px 30px; font-size: .92rem; }
+    .score-circle { width: 130px; height: 130px; }
+    .score-circle span { font-size: 2rem; }
+    .diagram { padding: 26px 14px; }
+    .diagram .top-node { padding: 13px 22px; font-size: .92rem; }
+    .branch { padding: 16px 14px; }
+    footer { padding: 44px 18px 30px; border-radius: 30px 30px 0 0; }
+    footer .f-title { font-size: 1.1rem; }
+    footer .author { padding: 12px 26px; font-size: .92rem; }
+    .timeline { padding-left: 34px; }
+    .tl-item { padding: 15px 18px; font-size: .9rem; }
+    .tl-item::before { left: -30px; }
+    .question { padding: 20px 16px 14px; }
+    .q-text { font-size: .95rem; gap: 10px; }
+    .q-index { width: 30px; height: 30px; font-size: .8rem; }
+    .options label { padding: 11px 14px; font-size: .9rem; }
+  }
+
+  @media (max-width: 400px) {
+    nav a { font-size: .68rem; padding: 6px 9px; }
+    header h1 { font-size: 1.6rem; }
+    .header-emoji { font-size: 3.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+
+<!-- ================= HEADER ================= -->
+<header>
+  <div class="floating-shape fs1"></div>
+  <div class="floating-shape fs2"></div>
+  <div class="floating-shape fs3"></div>
+  <div class="floating-shape fs4"></div>
+  <div class="floating-shape fs5"></div>
+
+  <span class="header-emoji">💻</span>
+  <div class="logo-badge">SHT · Информатика</div>
+  <h1>SHT Информатика — Синфи 7</h1>
+  <p class="subtitle">Дарс: «Намудҳо ва таркиби таъминоти барномавӣ»</p>
+</header>
+
+<!-- ================= NAV ================= -->
+<div class="nav-wrap">
+  <nav>
+    <a href="#s1">① Таъминот чист?</a>
+    <a href="#s2">② Намудҳо</a>
+    <a href="#s3">③ Системавӣ</a>
+    <a href="#s4">④ Амалӣ</a>
+    <a href="#s5">⑤ Утилитаҳо</a>
+    <a href="#s6">⑥ Таркиб</a>
+    <a href="#s7">⑦ Мисолҳо</a>
+    <a href="#s8">⑧ Хулоса</a>
+    <a href="#s9">📝 Тест</a>
+  </nav>
+</div>
+
+<main>
+
+  <!-- ========== 1 ========== -->
+  <section id="s1">
+    <div class="sec-title"><span class="num">1</span> Таъминоти барномавӣ чист?</div>
+
+    <p>
+      <span class="highlight">Таъминоти барномавӣ</span> (англ. <i>software</i> — «нармӣ») — ин маҷмӯи
+      барномаҳо, дастурҳо ва маълумотест, ки ба компютер мефаҳмонанд, ки чӣ кор кунад ва чӣ тавр кор кунад.
+    </p>
+
+    <p>Компютер аз ду қисми асосӣ иборат аст:</p>
+
+    <div class="cards">
+      <div class="card c1">
+        <span class="icon">🔩</span>
+        <h4>Таъминоти техникӣ (hardware)</h4>
+        <p>Қисмҳои физикии компютер: монитор, клавиатура, муш, протсессор, хотира, диск.</p>
+      </div>
+      <div class="card c2">
+        <span class="icon">🧠</span>
+        <h4>Таъминоти барномавӣ (software)</h4>
+        <p>Барномаҳое, ки компютерро идора мекунанд: системаи амалиётӣ, барномаҳои корбар, утилитаҳо.</p>
+      </div>
+    </div>
+
+    <div class="box-note orange">
+      <b>Мисоли осон:</b> Компютер ба бадани одам монанд аст — hardware «дасту пой» ва «майна»-и ӯст,
+      ал software «дониш ва фикр»-и ӯст. Бе барнома компютер танҳо як қуттии оҳанӣ мебошад! 🧰
+    </div>
+  </section>
+
+  <!-- ========== 2 ========== -->
+  <section id="s2">
+    <div class="sec-title"><span class="num">2</span> Намудҳои таъминоти барномавӣ</div>
+
+    <p>
+      Ҳамаи барномаҳо ба <b>се гурӯҳи асосӣ</b> ҷудо мешаванд. Ҳар гурӯҳ вазифаи худро дорад:
+    </p>
+
+    <div class="cards">
+      <div class="card c1">
+        <span class="icon">⚙️</span>
+        <h4>1. Таъминоти системавӣ</h4>
+        <p>Компютерро идора мекунад ва ба дигар барномаҳо имкон медиҳад, ки кор кунанд.</p>
+      </div>
+      <div class="card c2">
+        <span class="icon">📊</span>
+        <h4>2. Таъминоти амалӣ</h4>
+        <p>Барои иҷрои вазифаҳои мушаххаси корбар: навиштан, ҳисоб, тасвир, филм, интернет.</p>
+      </div>
+      <div class="card c3">
+        <span class="icon">🧰</span>
+        <h4>3. Барномаҳои хизматрасон</h4>
+        <p>Утилитаҳо — нигоҳдорӣ, тозакунӣ, ҳифз ва беҳтар кардани кори компютер.</p>
+      </div>
+      <div class="card c4">
+        <span class="icon">👨‍💻</span>
+        <h4>4. Воситаҳои барномасозӣ</h4>
+        <p>Барномаҳо барои сохтани барномаҳои нав: Python, Pascal, Scratch.</p>
+      </div>
+    </div>
+
+    <div class="box-note">
+      <b>Дар хотир нигоҳ дор!</b> Дар китобҳои гуногун ин гурӯҳҳоро ба таври гуногун ҷудо мекунанд.
+      Дар синфи 7 мо асосан <b>се намуди асосиро</b> меомӯзем: системавӣ, амалӣ ва хизматрасон.
+    </div>
+  </section>
+
+  <!-- ========== 3 ========== -->
+  <section id="s3">
+    <div class="sec-title"><span class="num">3</span> Таъминоти системавӣ</div>
+
+    <p>
+      <span class="highlight">Таъминоти системавӣ</span> — ин маҷмӯи барномаҳоест, ки кори тамоми компютерро
+      идора мекунанд. Онҳо «сардори» тамоми барномаҳо мебошанд.
+    </p>
+
+    <div class="cards">
+      <div class="card c1">
+        <span class="icon">🪟</span>
+        <h4>Системаи амалиётӣ</h4>
+        <p>Барномаи асосии компютер. Мисол: <b>Windows, Linux, macOS, Android, iOS</b>.</p>
+      </div>
+      <div class="card c2">
+        <span class="icon">🔌</span>
+        <h4>Драйверҳо</h4>
+        <p>Барномаҳои махсус барои идоракунии дастгоҳҳо: принтер, муш, садо, видеокорт.</p>
+      </div>
+      <div class="card c3">
+        <span class="icon">🛠️</span>
+        <h4>Барномаҳои хизматрасон</h4>
+        <p>Утилитаҳо — барои нигоҳдорӣ ва танзими компютер.</p>
+      </div>
+    </div>
+
+    <div class="box-note green">
+      <b>Вазифаҳои системаи амалиётӣ:</b>
+      <ul style="margin:10px 0 0 20px;">
+        <li>Идоракунии дастгоҳҳои компютер</li>
+        <li>Иҷрои барномаҳои корбар</li>
+        <li>Нигоҳдории файлу ҳуҷҷатҳо</li>
+        <li>Муҳофизати маълумот ва тақсими хотира</li>
+      </ul>
+    </div>
+
+    <p>
+      <b>Мисол:</b> Вақте ки шумо компютерро дармегиред, аввал <b>Windows</b> ё <b>Linux</b> бор мешавад —
+      ин системаи амалиётӣ аст. Баъд шумо метавонед дигар барномаҳоро кушоед.
+    </p>
+  </section>
+
+  <!-- ========== 4 ========== -->
+  <section id="s4">
+    <div class="sec-title"><span class="num">4</span> Таъминоти амалии барномавӣ</div>
+
+    <p>
+      <span class="highlight">Таъминоти амалӣ</span> (прикладной) — ин барномаҳое мебошанд, ки корбар
+      барои иҷрои кори мушаххаси худ истифода мебарад. Инҳо он барномаҳое ҳастанд, ки мо ҳар рӯз мебинем.
+    </p>
+
+    <div class="cards">
+      <div class="card c1">
+        <span class="icon">📝</span>
+        <h4>Барномаҳои матнӣ</h4>
+        <p>Барои навиштан ва таҳрири ҳуҷҷатҳо: <b>Microsoft Word</b>, Google Docs, Notepad.</p>
+      </div>
+      <div class="card c2">
+        <span class="icon">📈</span>
+        <h4>Барномаҳои ҷадвалӣ</h4>
+        <p>Барои ҳисобҳо ва диаграммаҳо: <b>Microsoft Excel</b>, Google Sheets.</p>
+      </div>
+      <div class="card c3">
+        <span class="icon">🎨</span>
+        <h4>Барномаҳои графикӣ</h4>
+        <p>Барои расм ва сурат: <b>Paint</b>, Photoshop, GIMP, CorelDRAW.</p>
+      </div>
+      <div class="card c4">
+        <span class="icon">🌐</span>
+        <h4>Браузерҳо</h4>
+        <p>Барои дидани сайтҳо: <b>Google Chrome</b>, Firefox, Opera, Edge.</p>
+      </div>
+      <div class="card c1">
+        <span class="icon">🎬</span>
+        <h4>Барномаҳои мультимедиа</h4>
+        <p>Барои филм, мусиқӣ ва видео: VLC, Windows Media Player, CapCut.</p>
+      </div>
+      <div class="card c2">
+        <span class="icon">🎮</span>
+        <h4>Барномаҳои бозӣ</h4>
+        <p>Барои фароғат: Minecraft, Roblox, FIFA, Chess.</p>
+      </div>
+    </div>
+
+    <div class="box-note orange">
+      <b>Қоидаи оддӣ:</b> Агар барнома ба шумо барои <b>кори мушаххас</b> кӯмак кунад —
+      ин таъминоти амалӣ аст. 🎯
+    </div>
+  </section>
+
+  <!-- ========== 5 ========== -->
+  <section id="s5">
+    <div class="sec-title"><span class="num">5</span> Барномаҳои хизматрасон (утилитаҳо)</div>
+
+    <p>
+      <span class="highlight">Утилитаҳо</span> — ин барномаҳои хурд, вале хеле муҳиме мебошанд,
+      ки барои <b>нигоҳдорӣ, ҳифз ва беҳтар кардани кори компютер</b> хизмат мекунанд.
+    </p>
+
+    <div class="cards">
+      <div class="card c1">
+        <span class="icon">🛡️</span>
+        <h4>Антивирусҳо</h4>
+        <p>Компютерро аз вирусҳо ҳифз мекунанд: Kaspersky, Avast, Windows Defender.</p>
+      </div>
+      <div class="card c2">
+        <span class="icon">🗜️</span>
+        <h4>Архиваторҳо</h4>
+        <p>Файлҳоро ҷамъ ва фишурда мекунанд: WinRAR, 7-Zip, WinZip.</p>
+      </div>
+      <div class="card c3">
+        <span class="icon">🧹</span>
+        <h4>Тозакунандаҳо</h4>
+        <p>Файлҳои нолозимро нест мекунанд: CCleaner, Disk Cleanup.</p>
+      </div>
+      <div class="card c4">
+        <span class="icon">💾</span>
+        <h4>Нусхабардорӣ</h4>
+        <p>Маълумотро нусхабардорӣ мекунанд: Acronis, Windows Backup.</p>
+      </div>
+      <div class="card c1">
+        <span class="icon">📀</span>
+        <h4>Дефрагментаторҳо</h4>
+        <p>Дискро танзим мекунанд, то компютер тезтар кор кунад.</p>
+      </div>
+      <div class="card c2">
+        <span class="icon">🔥</span>
+        <h4>Фаерволҳо</h4>
+        <p>Аз ҳамлаҳои интернетӣ ҳифз мекунанд.</p>
+      </div>
+    </div>
+
+    <div class="box-note">
+      <b>Мисоли воқеӣ:</b> Вақте ки компютери шумо «суст» мешавад, шумо <b>CCleaner</b>-ро истифода
+      мебаред — ин утилита аст. Вақте ки файли калонро ба дӯстатон мефиристед, онро бо <b>WinRAR</b>
+      фишурда мефиристед — ин ҳам утилита аст. 📦
+    </div>
+  </section>
+
+  <!-- ========== 6 ========== -->
+  <section id="s6">
+    <div class="sec-title"><span class="num">6</span> Таркиби таъминоти барномавӣ</div>
+
+    <p>
+      Таркиби таъминоти барномавӣ — ин <b>сохтори умумии ҳамаи барномаҳо</b> дар компютер аст.
+      Он ба таври зерин нишон дода мешавад:
+    </p>
+
+    <div class="diagram">
+      <div class="top-node">💻 ТАЪМИНОТИ БАРНОМАВӢ</div>
+      <div class="line"></div>
+      <div class="branches">
+        <div class="branch b1">
+          <b>⚙️ Таъминоти системавӣ</b>
+          <span>Системаи амалиётӣ<br>Драйверҳо<br>Утилитаҳо</span>
+        </div>
+        <div class="branch b2">
+          <b>📊 Таъминоти амалӣ</b>
+          <span>Матнӣ<br>Ҷадвалӣ<br>Графикӣ<br>Браузер</span>
+        </div>
+        <div class="branch b3">
+          <b>🧰 Барномаҳои хизматрасон</b>
+          <span>Антивирус<br>Архиватор<br>Тозакунанда</span>
+        </div>
+        <div class="branch b4">
+          <b>👨‍💻 Воситаҳои барномасозӣ</b>
+          <span>Python<br>Pascal<br>Scratch</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box-note green" style="margin-top:26px;">
+      <b>Хулосаи таркиб:</b> Ҳамаи ин қисмҳо бо ҳам як <b>системаи ягона</b>-ро ташкил медиҳанд.
+      Системавӣ — асос, амалӣ — кор, утилитаҳо — нигоҳдорӣ. 🏗️
+    </div>
+  </section>
+
+  <!-- ========== 7 ========== -->
+  <section id="s7">
+    <div class="sec-title"><span class="num">7</span> Мисолҳои воқеӣ</div>
+
+    <p>Биёед бубинем, ки як рӯзи оддии корбар чӣ гуна барномаҳоро истифода мебарад:</p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <b>🌅 7:00 — Компютерро дармекунам</b><br>
+        Аввал <b>Windows 11</b> (таъминоти системавӣ) бор мешавад.
+      </div>
+      <div class="tl-item">
+        <b>☕ 7:05 — Почтаро мебинам</b><br>
+        Браузери <b>Google Chrome</b> (таъминоти амалӣ)-ро мекушоям.
+      </div>
+      <div class="tl-item">
+        <b>📝 8:00 — Вазифаи хонагӣ</b><br>
+        Дар <b>Microsoft Word</b> (таъминоти амалӣ) реферат менависам.
+      </div>
+      <div class="tl-item">
+        <b>📊 9:30 — Ҳисобҳо</b><br>
+        Дар <b>Microsoft Excel</b> (таъминоти амалӣ) ҷадвал месозам.
+      </div>
+      <div class="tl-item">
+        <b>🛡️ 10:00 — Сканкунӣ</b><br>
+        Бо <b>антивирус</b> (утилита) компютерро месанҷам.
+      </div>
+      <div class="tl-item">
+        <b>📦 10:30 — Фиристодани файл</b><br>
+        Бо <b>WinRAR</b> (утилита) файлҳоро фишурда мефиристам.
+      </div>
+      <div class="tl-item">
+        <b>🎮 16:00 — Фароғат</b><br>
+        Дар <b>Minecraft</b> (таъминоти амалӣ) бозӣ мекунам.
+      </div>
+      <div class="tl-item">
+        <b>🌙 22:00 — Хомӯш кардан</b><br>
+        Компютерро хомӯш мекунам — системаи амалиётӣ ҳамаи барномаҳоро мебандад.
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 8 ========== -->
+  <section id="s8">
+    <div class="sec-title"><span class="num">8</span> Хулоса</div>
+
+    <p>Дар ин дарс мо омӯхтем, ки:</p>
+
+    <ul class="summary-list">
+      <li><b>Таъминоти барномавӣ</b> — маҷмӯи барномаҳоест, ки компютерро идора мекунад.</li>
+      <li>Он ба <b>се гурӯҳи асосӣ</b> ҷудо мешавад: системавӣ, амалӣ ва хизматрасон.</li>
+      <li><b>Таъминоти системавӣ</b> — асоси компютер: системаи амалиётӣ, драйверҳо.</li>
+      <li><b>Таъминоти амалӣ</b> — барномаҳо барои корбар: Word, Excel, Paint, Chrome.</li>
+      <li><b>Утилитаҳо</b> — барои нигоҳдорӣ ва ҳифзи компютер: антивирус, архиватор.</li>
+      <li>Ҳамаи ин қисмҳо якҷоя <b>таркиби таъминоти барномавӣ</b>-ро ташкил медиҳанд.</li>
+      <li>Бе таъминоти барномавӣ компютер <b>кор карда наметавонад</b>!</li>
+    </ul>
+
+    <div class="box-note pink" style="margin-top:22px;">
+      🎓 <b>Ба ёд гиред:</b> Hardware — бадан, Software — рӯҳ. Ҳар ду якҷоя компютерро зинда мекунанд!
+    </div>
+  </section>
+
+  <!-- ========== ҶАДВАЛ ========== -->
+  <section id="table-sec">
+    <div class="sec-title"><span class="num">📋</span> Ҷадвали муқоисаи намудҳо</div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Намуди таъминот</th>
+            <th>Барои чӣ хизмат мекунад</th>
+            <th>Мисолҳо</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>⚙️ Таъминоти системавӣ</td>
+            <td>Идоракунии компютер, дастгоҳҳо ва иҷрои барномаҳо</td>
+            <td>Windows, Linux, macOS, драйверҳо</td>
+          </tr>
+          <tr>
+            <td>📊 Таъминоти амалӣ</td>
+            <td>Иҷрои вазифаҳои мушаххаси корбар</td>
+            <td>Word, Excel, Paint, Chrome, Minecraft</td>
+          </tr>
+          <tr>
+            <td>🧰 Барномаҳои хизматрасон</td>
+            <td>Нигоҳдорӣ, ҳифз ва беҳтар кардани кори компютер</td>
+            <td>Kaspersky, WinRAR, CCleaner</td>
+          </tr>
+          <tr>
+            <td>👨‍💻 Воситаҳои барномасозӣ</td>
+            <td>Сохтани барномаҳои нав</td>
+            <td>Python, Pascal, Scratch, Java</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== ТЕСТ ========== -->
+  <section id="s9" id="quiz-section">
+    <div class="sec-title"><span class="num">📝</span> Тест: 10 савол</div>
+
+    <p style="margin-bottom:22px;">
+      Ба ҳар савол як ҷавоби дурустро интихоб кунед. Дар охир тугмаи
+      <b>«Натиҷаро нишон деҳ»</b>-ро пахш кунед. 🎯
+    </p>
+
+    <div id="quiz"></div>
+
+    <div class="btn-row">
+      <button class="btn" onclick="checkQuiz()">✅ Натиҷаро нишон деҳ</button>
+      <button class="btn secondary" onclick="resetQuiz()">🔄 Аз нав</button>
+    </div>
+
+    <div id="result">
+      <div class="score-circle" id="scoreCircle"><span id="scoreText">0/10</span></div>
+      <h3 id="resultTitle"></h3>
+      <p id="resultMessage"></p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <span class="f-logo">💻</span>
+  <div class="f-title">SHT Информатика — Синфи 7</div>
+  <div>Дарс: «Намудҳо ва таркиби таъминоти барномавӣ»</div>
+  <div class="author">Муаллиф: Токтобаев Шахром</div>
+  <small>© 2025 — Ҳамаи ҳуқуқҳо ҳифз шудаанд</small>
+</footer>
+
+<script>
+/* ================= САВОЛҲО ================= */
+const questions = [
+  { q: "Таъминоти барномавӣ (software) чист?",
+    o: ["Қисмҳои физикии компютер", "Маҷмӯи барномаҳо ва дастурҳо барои компютер", "Кабелҳо ва пайвасткунакҳо", "Миз ва курсӣ"],
+    a: 1 },
+  { q: "Кадоме аз инҳо таъминоти системавӣ мебошад?",
+    o: ["Microsoft Word", "Windows 11", "Paint", "Telegram"],
+    a: 1 },
+  { q: "Системаи амалиётӣ чӣ вазифа дорад?",
+    o: ["Танҳо суратҳоро нигоҳ медорад", "Идоракунии дастгоҳҳо ва иҷрои барномаҳо", "Танҳо чоп кардани ҳуҷҷатҳо", "Танҳо бозӣ кардан"],
+    a: 1 },
+  { q: "Драйверҳо барои чӣ лозиманд?",
+    o: ["Барои навиштани матн", "Барои идоракунии дастгоҳҳои беруна", "Барои филм дидан", "Барои сурат гирифтан"],
+    a: 1 },
+  { q: "Кадоме аз инҳо таъминоти амалӣ (прикладной) аст?",
+    o: ["Антивирус", "Драйвер", "Microsoft Excel", "BIOS"],
+    a: 2 },
+  { q: "Кадоме аз инҳо ба барномаҳои хизматрасон (утилитаҳо) дохил мешавад?",
+    o: ["Windows", "WinRAR", "Microsoft Word", "Google Chrome"],
+    a: 1 },
+  { q: "Таркиби асосии таъминоти барномавӣ аз чанд қисм иборат аст?",
+    o: ["2 қисм", "3 қисм", "5 қисм", "10 қисм"],
+    a: 1 },
+  { q: "Барномаҳои графикӣ (Paint, Photoshop) ба кадом намуд дохил мешаванд?",
+    o: ["Таъминоти системавӣ", "Таъминоти амалӣ", "Драйверҳо", "Системаи амалиётӣ"],
+    a: 1 },
+  { q: "Кадом барнома барои фишурдани файлҳо истифода мешавад?",
+    o: ["Microsoft Word", "WinRAR", "Google Chrome", "Paint"],
+    a: 1 },
+  { q: "Кадом ҷумла дуруст аст?",
+    o: ["Таъминоти барномавӣ қисми моддии компютер аст", "Бе таъминоти барномавӣ компютер кор карда наметавонад", "Таъминоти барномавӣ танҳо барои бозӣ аст", "Таъминоти барномавӣ лозим нест"],
+    a: 1 }
+];
+
+/* ================= СОХТАНИ ТЕСТ ================= */
+const quizEl = document.getElementById('quiz');
+
+function buildQuiz() {
+  quizEl.innerHTML = '';
+  questions.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'question';
+    div.id = 'q' + i;
+
+    let optionsHTML = '';
+    item.o.forEach((opt, j) => {
+      optionsHTML += `
+        <label id="lbl-${i}-${j}">
+          <input type="radio" name="q${i}" value="${j}" onchange="markSelected(${i})">
+          <span>${opt}</span>
+        </label>`;
+    });
+
+    div.innerHTML = `
+      <div class="q-text">
+        <span class="q-index">${i + 1}</span>
+        <span>${item.q}</span>
+      </div>
+      <div class="options">${optionsHTML}</div>
+    `;
+    quizEl.appendChild(div);
+  });
+}
+
+function markSelected(i) {
+  const labels = document.querySelectorAll(`#q${i} label`);
+  labels.forEach(l => l.classList.remove('selected'));
+  const checked = document.querySelector(`input[name="q${i}"]:checked`);
+  if (checked) checked.parentElement.classList.add('selected');
+}
+
+/* ================= САНҶИШ ================= */
+function checkQuiz() {
+  let score = 0;
+  let unanswered = 0;
+
+  questions.forEach((item, i) => {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    const labels = document.querySelectorAll(`#q${i} label`);
+    labels.forEach(l => l.classList.remove('correct', 'wrong', 'selected'));
+
+    if (!selected) {
+      unanswered++;
+      labels[item.a].classList.add('correct');
+      return;
+    }
+
+    const val = parseInt(selected.value);
+    if (val === item.a) {
+      score++;
+      labels[val].classList.add('correct');
+    } else {
+      labels[val].classList.add('wrong');
+      labels[item.a].classList.add('correct');
+    }
+  });
+
+  showResult(score, unanswered);
+}
+
+function showResult(score, unanswered) {
+  const result   = document.getElementById('result');
+  const circle   = document.getElementById('scoreCircle');
+  const scoreText= document.getElementById('scoreText');
+  const title    = document.getElementById('resultTitle');
+  const msg      = document.getElementById('resultMessage');
+
+  const percent = (score / questions.length) * 100;
+  const degrees = (percent / 100) * 360;
+
+  let color = '#f43f5e';
+  if (percent >= 90)      color = '#10b981';
+  else if (percent >= 70) color = '#7c3aed';
+  else if (percent >= 50) color = '#f59e0b';
+
+  circle.style.background =
+    `conic-gradient(${color} 0deg, ${color} ${degrees}deg, #e2e8f0 ${degrees}deg)`;
+  scoreText.textContent = score + '/' + questions.length;
+
+  if (percent >= 90) {
+    title.textContent = '🏆 Аъло!';
+    msg.textContent = 'Шумо мавзӯро пурра фаҳмидед! Офарин!';
+  } else if (percent >= 70) {
+    title.textContent = '😊 Хуб!';
+    msg.textContent = 'Натиҷаи шумо хеле хуб аст. Камбудиҳоро такрор кунед.';
+  } else if (percent >= 50) {
+    title.textContent = '🙂 Қаноатбахш';
+    msg.textContent = 'Дарсро боз як бор хонед ва тестро такрор кунед.';
+  } else {
+    title.textContent = '📚 Боз такрор лозим аст';
+    msg.textContent = 'Матни дарсро бодиққат хонед ва боз кӯшиш кунед!';
+  }
+
+  if (unanswered > 0) {
+    msg.textContent += ` (${unanswered} савол ҷавоб дода нашуд)`;
+  }
+
+  result.classList.add('show');
+  result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function resetQuiz() {
+  document.getElementById('result').classList.remove('show');
+  buildQuiz();
+  const target = document.getElementById('s9');
+  window.scrollTo({ top: target.offsetTop - 90, behavior: 'smooth' });
+}
+
+/* ================= АНИМАТСИЯҲО ================= */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('section').forEach(sec => observer.observe(sec));
+
+/* ================= PROGRESS ================= */
+window.addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  const scrolled = (window.scrollY / h) * 100;
+  document.getElementById('progress-bar').style.width = scrolled + '%';
+}, { passive: true });
+
+/* ================= ОҒОЗ ================= */
+buildQuiz();
+</script>
+
+</body>
+</html>
